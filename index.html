@@ -22,8 +22,8 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a href="index.html" class="nav-link active">Domů</a></li>
                 <div class="dropdown">
-                    <button class="btn" id="dropdownButton" data-bs-toggle="dropdown"
-                        aria-expanded="false">Můj účet</button>
+                    <button class="btn" id="dropdownButton" data-bs-toggle="dropdown" aria-expanded="false">Můj
+                        účet</button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownButton">
                         <li><a id="info" class="dropdown-item" href="#">Přihlásit se</a></li>
                         <li><a id="stats" class="dropdown-item" href="#">Zaregistrovat se</a></li>
@@ -31,11 +31,26 @@
                 </div>
             </ul>
         </div>
-        <div class="d-flex">
+        <div id="searchDiv" class="d-flex">
             <div class="collapse collapse-horizontal" id="searchBar">
-                <form class="d-flex" onsubmit="event.preventDefault(); Search();">
+                <form onsubmit="event.preventDefault(); Search();">
                     <input id="search" class="form-control" type="search" placeholder="Hledat" aria-label="Search">
                 </form>
+                <button id="advanced" class="btn" data-bs-toggle="dropdown" data-bs-target="#options" aria-expanded="false">Rozšířené vyhledávání</button>
+                <ul id="options" class="dropdown-menu dropdown-menu-end">
+                    <li class="dropdown-item">
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-item">Aloha</li>
+                            <li class="dropdown-item">Ahola</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-item">
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li class="dropdown-item">kebap</li>
+                            <li class="dropdown-item">KEBAb</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
             <button id="searchButton" class="btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
@@ -48,15 +63,18 @@
     </nav>
     <div id="loadingWheel">
         <div id="loadingDiv" class="" role="status">
-          <span class="visually-hidden"></span>
+            <span class="visually-hidden"></span>
         </div>
-      </div>
+    </div>
+    <div id="content">
+
+    </div>
     <script>
         var user;
         if (localStorage.getItem("login_key") != null) {
-            GetBy("users", "login_key", localStorage.getItem("login_key")).then((value)=>{
+            GetBy("users", "login_key", localStorage.getItem("login_key")).then((value) => {
                 value = value.data.users[0];
-                if (value != undefined) { 
+                if (value != undefined) {
                     user = value;
                     $(`<li class="nav-item"><a href="groups.html" class="nav-link">Skupiny</a></li>`).insertAfter($(".navbar-nav").children().eq(0));
                     $("#dropdownButton").text(value.username);
@@ -70,20 +88,26 @@
         var sBar = $("#searchBar");
         var search = $("#search");
         var loadingDiv = $("#loadingDiv");
-        $(document).ready(function() {
-            $("#searchButton").click(function() {
-                if (!sBar.hasClass("collapsing")) {
+        $(document).ready(function () {
+            $("#searchButton").click(function () {
+                if (!sBar.hasClass("show") && !sBar.hasClass("collapsing")) {
                     sBar.collapse("show");
                     search.focus();
+                    $("body").click(function(event) {
+                        let el = $(event.target);
+                        if (el.closest("#searchDiv").length!=0) {
+                            if (el.closest("#searchbutton").length!=0) {
+                                Search();
+                            }
+                        }
+                        else {
+                            sBar.collapse("hide");
+                            $("body").off("click");
+                        }
+                    });
                 }
-            });
-            search.focusout(function(event) {
-                if ($("#searchButton:hover").length==0) {
-                    sBar.collapse("hide");
-                }
-                else {
+                else if (sBar.hasClass("show")) {
                     Search();
-                    search.focus();
                 }
             });
         });
@@ -92,7 +116,7 @@
         function Search() {
             console.log("Hledání");
             loadingDiv.addClass("spinner-border");
-            
+
         }
     </script>
 </body>

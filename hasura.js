@@ -1,5 +1,5 @@
 function GetQuery(query) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
         $.ajax({
             url: "https://praxe-forum.hasura.app/v1/graphql",
             headers: {

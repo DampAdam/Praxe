@@ -140,7 +140,6 @@
         var user;
         if (localStorage.getItem("login_key") != null) {
             Hasura.GetBy("users", "login_key", localStorage.getItem("login_key")).then((value) => {
-                console.log(value);
                 value = value.data.forum_users[0];
                 if (value != undefined) {
                     user = value;

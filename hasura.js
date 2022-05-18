@@ -213,7 +213,6 @@ class Hasura {
                 }
             }
         `).then((value)=>{
-            console.log(value);
             this.GetQuery(`
                 mutation {
                     update_forum_groups(where: {id: {_eq: ${value.data.delete_forum_posts.returning[0].group_id}}}, _inc: {posts: -1}) {

@@ -3,7 +3,6 @@ class Hasura {
         promise.then((value)=>{console.log(value);});
     }
     static GetQuery(query) {
-        console.log(query);
         return new Promise(function (resolve) {
             $.ajax({
                 url: "https://praxe-forum.hasura.app/v1/graphql",

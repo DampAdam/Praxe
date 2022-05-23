@@ -55,7 +55,7 @@
 					);
 				}}
 			>
-				Poslat zprávu
+				Přidat příspěvek
 			</button>
 		</div>
 		<div>
@@ -65,7 +65,7 @@
 					Hasura.DeleteMessage(document.getElementById("id").value);
 				}}
 			>
-				Odebrat zprávu
+				Odebrat příspěvek
 			</button>
 		</div>
 		<div>
@@ -79,7 +79,87 @@
 					);
 				}}
 			>
-				Editovat zprávu
+				Editovat příspěvek
+			</button>
+		</div>
+	</div>
+	<div>
+		<div>
+			<input placeholder="Content" id="content" type="text" />
+			<button
+				on:click={() => {
+					Hasura.CreateMessage(
+						document.getElementById("content").value,
+						4,
+						3
+					);
+				}}
+			>
+				Přidat skupinu
+			</button>
+		</div>
+		<div>
+			<input placeholder="Id" id="id" type="text" />
+			<button
+				on:click={() => {
+					Hasura.DeleteMessage(document.getElementById("id").value);
+				}}
+			>
+				Odebrat skupinu
+			</button>
+		</div>
+		<div>
+			<input placeholder="Id" id="id-edit" type="text" />
+			<input placeholder="Content" id="content-edit" type="text" />
+			<button
+				on:click={() => {
+					Hasura.EditMessage(
+						document.getElementById("id-edit").value,
+						document.getElementById("content-edit").value
+					);
+				}}
+			>
+				Editovat skupinu
+			</button>
+		</div>
+	</div>
+	<div>
+		<div>
+			<input placeholder="Content" id="content" type="text" />
+			<button
+				on:click={() => {
+					Hasura.CreateMessage(
+						document.getElementById("content").value,
+						4,
+						3
+					);
+				}}
+			>
+				Přidat účet
+			</button>
+		</div>
+		<div>
+			<input placeholder="Id" id="id" type="text" />
+			<button
+				on:click={() => {
+					Hasura.DeleteMessage(document.getElementById("id").value);
+				}}
+			>
+				Odebrat účet
+			</button>
+		</div>
+		<div>
+			<input placeholder="Id" id="id-edit" type="text" />
+			<input placeholder="Content" id="content-edit" type="text" />
+			<button
+				on:click={() => {
+					Hasura.EditMessage(
+						document.getElementById("id-edit").value,
+						document.getElementById("content-edit").value
+					);
+				}}
+			>
+				Editovat účet
 			</button>
 		</div>
 	</div>

@@ -1005,25 +1005,25 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let div;
-    	let span0;
+    	let h30;
     	let t1;
     	let crudgroup0;
     	let t2;
     	let br0;
     	let t3;
-    	let span1;
+    	let h31;
     	let t5;
     	let crudgroup1;
     	let t6;
     	let br1;
     	let t7;
-    	let span2;
+    	let h32;
     	let t9;
     	let crudgroup2;
     	let t10;
     	let br2;
     	let t11;
-    	let span3;
+    	let h33;
     	let t13;
     	let crudgroup3;
     	let current;
@@ -1044,38 +1044,38 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			span0 = element("span");
-    			span0.textContent = "Uživatelé";
+    			h30 = element("h3");
+    			h30.textContent = "Uživatelé";
     			t1 = space();
     			create_component(crudgroup0.$$.fragment);
     			t2 = space();
     			br0 = element("br");
     			t3 = space();
-    			span1 = element("span");
-    			span1.textContent = "Zprávy";
+    			h31 = element("h3");
+    			h31.textContent = "Zprávy";
     			t5 = space();
     			create_component(crudgroup1.$$.fragment);
     			t6 = space();
     			br1 = element("br");
     			t7 = space();
-    			span2 = element("span");
-    			span2.textContent = "Příspěvky";
+    			h32 = element("h3");
+    			h32.textContent = "Příspěvky";
     			t9 = space();
     			create_component(crudgroup2.$$.fragment);
     			t10 = space();
     			br2 = element("br");
     			t11 = space();
-    			span3 = element("span");
-    			span3.textContent = "Skupiny";
+    			h33 = element("h3");
+    			h33.textContent = "Skupiny";
     			t13 = space();
     			create_component(crudgroup3.$$.fragment);
-    			add_location(span0, file, 6, 1, 73);
-    			add_location(br0, file, 8, 1, 124);
-    			add_location(span1, file, 9, 1, 130);
-    			add_location(br1, file, 11, 1, 181);
-    			add_location(span2, file, 12, 1, 187);
-    			add_location(br2, file, 14, 1, 238);
-    			add_location(span3, file, 15, 1, 244);
+    			add_location(h30, file, 6, 1, 73);
+    			add_location(br0, file, 8, 1, 120);
+    			add_location(h31, file, 9, 1, 126);
+    			add_location(br1, file, 11, 1, 173);
+    			add_location(h32, file, 12, 1, 179);
+    			add_location(br2, file, 14, 1, 226);
+    			add_location(h33, file, 15, 1, 232);
     			add_location(div, file, 5, 0, 66);
     		},
     		l: function claim(nodes) {
@@ -1083,25 +1083,25 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			append_dev(div, span0);
+    			append_dev(div, h30);
     			append_dev(div, t1);
     			mount_component(crudgroup0, div, null);
     			append_dev(div, t2);
     			append_dev(div, br0);
     			append_dev(div, t3);
-    			append_dev(div, span1);
+    			append_dev(div, h31);
     			append_dev(div, t5);
     			mount_component(crudgroup1, div, null);
     			append_dev(div, t6);
     			append_dev(div, br1);
     			append_dev(div, t7);
-    			append_dev(div, span2);
+    			append_dev(div, h32);
     			append_dev(div, t9);
     			mount_component(crudgroup2, div, null);
     			append_dev(div, t10);
     			append_dev(div, br2);
     			append_dev(div, t11);
-    			append_dev(div, span3);
+    			append_dev(div, h33);
     			append_dev(div, t13);
     			mount_component(crudgroup3, div, null);
     			current = true;

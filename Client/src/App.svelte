@@ -4,15 +4,15 @@
 
 
 <div>
-	<span>Uživatelé</span>
+	<h3>Uživatelé</h3>
 	<CrudGroup name="Users"/>
 	<br>
-	<span>Zprávy</span>
+	<h3>Zprávy</h3>
 	<CrudGroup name="Messages"/>
 	<br>
-	<span>Příspěvky</span>
+	<h3>Příspěvky</h3>
 	<CrudGroup name="Posts"/>
 	<br>
-	<span>Skupiny</span>
+	<h3>Skupiny</h3>
 	<CrudGroup name="Groups"/>
 </div>

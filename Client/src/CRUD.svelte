@@ -17,17 +17,24 @@
         });
         return params;
     }
+    function Translate(str, dict) {
+        for (let word in dict) {
+            str = str.replaceAll(word, dict[word]);
+        }
+        return str;
+    }
     export let hasuraFunction;
     export let hasuraName;
     let names = GetParams(hasuraFunction);
-    let text = hasuraName
-        .replace("create", "Přidat")
-        .replace("update", "Editovat")
-        .replace("delete", "Odebrat")
-        .replace("message", "Zprávu")
-        .replace("group", "Skupinu")
-        .replace("user", "Uživatele")
-        .replace("post", "Příspěvek");
+    let text = Translate(hasuraName, {
+        "create": "Přidat",
+        "update": "Editovat",
+        "delete": "Odebrat",
+        "message": "Zprávu",
+        "group": "Skupinu",
+        "user": "Uživatele",
+        "post": "Příspěvek"
+    });
     let className = hasuraName.replace(" ", "-");
 </script>
 

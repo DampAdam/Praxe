@@ -412,7 +412,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (35:4) {#each names as name}
+    // (42:4) {#each names as name}
     function create_each_block$1(ctx) {
     	let input;
 
@@ -422,7 +422,7 @@ var app = (function () {
     			attr_dev(input, "placeholder", /*name*/ ctx[6].split("_").map(func$1).join(" "));
     			attr_dev(input, "class", /*className*/ ctx[3]);
     			attr_dev(input, "type", "text");
-    			add_location(input, file$1, 35, 8, 1158);
+    			add_location(input, file$1, 42, 8, 1278);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -437,7 +437,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(35:4) {#each names as name}",
+    		source: "(42:4) {#each names as name}",
     		ctx
     	});
 
@@ -469,8 +469,8 @@ var app = (function () {
     			t0 = space();
     			button = element("button");
     			button.textContent = `${/*text*/ ctx[2]}`;
-    			add_location(button, file$1, 46, 4, 1465);
-    			add_location(div, file$1, 33, 0, 1116);
+    			add_location(button, file$1, 53, 4, 1585);
+    			add_location(div, file$1, 40, 0, 1236);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -552,6 +552,14 @@ var app = (function () {
     	return params;
     }
 
+    function Translate(str, dict) {
+    	for (let word in dict) {
+    		str = str.replaceAll(word, dict[word]);
+    	}
+
+    	return str;
+    }
+
     const func$1 = function (n) {
     	return n.charAt(0).toUpperCase() + n.slice(1);
     };
@@ -562,7 +570,17 @@ var app = (function () {
     	let { hasuraFunction } = $$props;
     	let { hasuraName } = $$props;
     	let names = GetParams(hasuraFunction);
-    	let text = hasuraName.replace("create", "Přidat").replace("update", "Editovat").replace("delete", "Odebrat").replace("message", "Zprávu").replace("group", "Skupinu").replace("user", "Uživatele").replace("post", "Příspěvek");
+
+    	let text = Translate(hasuraName, {
+    		"create": "Přidat",
+    		"update": "Editovat",
+    		"delete": "Odebrat",
+    		"message": "Zprávu",
+    		"group": "Skupinu",
+    		"user": "Uživatele",
+    		"post": "Příspěvek"
+    	});
+
     	let className = hasuraName.replace(" ", "-");
     	const writable_props = ['hasuraFunction', 'hasuraName'];
 
@@ -581,6 +599,7 @@ var app = (function () {
 
     	$$self.$capture_state = () => ({
     		GetParams,
+    		Translate,
     		hasuraFunction,
     		hasuraName,
     		names,
@@ -662,6 +681,16 @@ var app = (function () {
                 }
             ).then(response => response.json()).then(data => console.log(data));
         }
+        static all = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM0123456789),.-(?!_*<>";
+        static GetLoginKey() {
+            let key = "";
+            let a = this.all;
+            let l = a.length-1;
+            for (let i=0;i<31;i++) {
+                key += a[Math.floor(Math.random()*l)];
+            }
+            return key;
+        }
     }
     Hasura.Messages = {
         CreateMessage: function (content, post_id, user_id, reply_id = null) {
@@ -669,7 +698,7 @@ var app = (function () {
                 reply_id = null;
             }
             Hasura.Execute(`
-    mutation($content: String!, $post_id: Int!, $user_id: Int!, $reply_id: Int = null) {
+    mutation($content: String!, $post_id: Int!, $user_id: Int!, $reply_id: Int) {
         CreateMessage(content: $content, post_id: $post_id, user_id: $user_id, reply_id: $reply_id) {
             id
         }
@@ -713,37 +742,66 @@ var app = (function () {
     Hasura.Posts = {
         CreatePost: function (title, content, user_id, group_id) {
             Hasura.Execute(`
-    mutation($title: String!, $content: String!, $user_id: Int!, $group_id: Int!) {
-        CreatePost(title: $title, content: $content, user_id: $user_id, group_id: $group_id) {
-            id
+        mutation($title: String!, $content: String!, $user_id: Int!, $group_id: Int!) {
+            CreatePost(title: $title, content: $content, user_id: $user_id, group_id: $group_id) {
+                id
+            }
         }
-    }
-    `, { title, content, user_id, group_id });
+        `, { title, content, user_id, group_id });
         },
         DeletePost: function (id) {
             Hasura.Execute(`
-    
-    `);
+        mutation($id: Int!) {
+            DeletePost(id: $id) {
+                user_id
+                title
+                message_count
+                group_id
+                created
+                content
+            }
+        }          
+        `, { id });
         },
         UpdatePost: function (id, title = null, content = null) {
             if ((title == null || title == "") && (content == null || content == "")) return;
             if (title == "") title = null;
             if (content == "") content = null;
             Hasura.Execute(`
-    
-    `);
+        mutation($id: Int!, $content: String, $title: String) {
+            UpdatePost(id: $id, content: $content, title: $title) {
+              user_id
+              message_count
+              group_id
+              created
+            }
+          }
+        `, { id, title, content });
         }
     };
     Hasura.Groups = {
-        CreateGroup: function (name, description, user_id) {
+        CreateGroup: function (name, user_id, description = null) {
             Hasura.Execute(`
-    
-    `);
+        mutation MyMutation($name: String!, $user_id: Int!, $description: String) {
+            CreateGroup(name: $name, user_id: $user_id, description: $description) {
+              id
+            }
+          }          
+        `, { name, user_id, description });
         },
         DeleteGroup: function (id) {
             Hasura.Execute(`
-    
-    `);
+        mutation MyMutation($id: Int!) {
+            DeleteGroup(id: $id) {
+              user_id
+              posts
+              name
+              members
+              description
+              created
+            }
+          }          
+        `, { id });
         },
         UpdateGroup: function (id, name = null, description = null, user_id = null) {
             if ((name == null || name == "") && (description == null || description == "") && (user_id == null || user_id == "")) return;
@@ -751,24 +809,49 @@ var app = (function () {
             if (description == "") description = null;
             if (user_id == "") user_id = null;
             Hasura.Execute(`
-    
-    `);
+        mutation MyMutation($id: Int!, $name: String, $user_id: Int, $description: String) {
+            UpdateGroup(id: $id, name: $name, user_id: $user_id, description: $description) {
+              user_id
+              posts
+              name
+              members
+              id
+              description
+              created
+            }
+          }          
+        `, { id, name, description, user_id });
         }
     };
     Hasura.Users = {
         CreateUser: function (first_name, last_name, username, email, password, bio = null) {
             if (bio == "") bio = null;
             Hasura.Execute(`
-    
-    `);
+        mutation MyMutation($first_name: String!, $last_name: String!, $username: String!, $email: String!, $password: String!, $bio: String, $login_key: String) {
+            CreateUser(email: $email, first_name: $first_name, last_name: $last_name, password: $password, username: $username, bio: $bio, login_key: $login_key) {
+              id
+            }
+          }          
+        `, { first_name, last_name, username, email, password, bio, "login_key": Hasura.GetLoginKey() });
         },
         DeleteUser: function (id) {
             Hasura.Execute(`
-    
-    `);
+        mutation MyMutation($id: Int!) {
+            DeleteUser(id: $id) {
+              first_name
+              last_name
+              username
+              email
+              password
+              bio
+              login_key
+              created
+            }
+          }          
+        `, { id });
         },
         UpdateUser: function (id, first_name = null, last_name = null, username = null, email = null, password = null, bio = null) {
-            if ((first_name == null || first_name == "") && (last_name == null || last_name == "") && (username == null || username == "") && (email == null || email == "") && (password == null || password == "")) return;
+            if ((first_name == null || first_name == "") && (last_name == null || last_name == "") && (username == null || username == "") && (email == null || email == "") && (password == null || password == "") && (bio == null || bio == "")) return;
             if (first_name == "") first_name = null;
             if (last_name == "") last_name = null;
             if (username == "") username = null;
@@ -776,8 +859,19 @@ var app = (function () {
             if (password == "") password = null;
             if (bio == "") bio = null;
             Hasura.Execute(`
-    
-    `);
+        mutation MyMutation($id: Int!, $first_name: String, $last_name: String, $username: String, $email: String, $password: String, $bio: String, $login_key: String) {
+            UpdateUser(id: $id, first_name: $first_name, last_name: $last_name, username: $username, email: $email, password: $password, bio: $bio, login_key: $login_key) {
+              first_name
+              last_name
+              username
+              email
+              password
+              bio
+              login_key
+              created
+            }
+          }          
+        `, { id, first_name, last_name, username, email, password, bio, "login_key": null });
         }
     };
 
